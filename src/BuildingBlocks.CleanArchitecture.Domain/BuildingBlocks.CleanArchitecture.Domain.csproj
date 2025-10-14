@@ -9,10 +9,13 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>BuildingBlocks.CleanArchitecture.Domain</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.1.0</Version>
 		<Authors>Alexey Savchenko</Authors>
 		<Description>DDD Domain Layer Entities</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/alexey-savchenko-am/BuildingBlocks.CleanArchitecture</RepositoryUrl>
 	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+	</ItemGroup>
 </Project>

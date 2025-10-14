@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.CleanArchitecture.Domain;
+﻿namespace BuildingBlocks.CleanArchitecture.Domain.Core;
 
 public abstract class AggregateRoot<TId>
     : Entity<TId>

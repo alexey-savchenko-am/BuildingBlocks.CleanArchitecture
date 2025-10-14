@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.CleanArchitecture.Infrastructure.Persistence;
+﻿namespace BuildingBlocks.CleanArchitecture.Infrastructure.Persistence.Database;
 
 public class DatabaseOptions
 {

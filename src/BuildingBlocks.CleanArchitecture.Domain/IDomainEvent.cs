@@ -1,3 +1,5 @@
-﻿namespace BuildingBlocks.CleanArchitecture.Domain;
+﻿using MediatR;
 
-public interface IDomainEvent { }
+namespace BuildingBlocks.CleanArchitecture.Domain;
+
+public interface IDomainEvent : INotification { }

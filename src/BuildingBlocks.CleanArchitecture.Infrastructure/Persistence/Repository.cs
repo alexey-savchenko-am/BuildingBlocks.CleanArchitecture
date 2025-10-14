@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.CleanArchitecture.Domain;
+﻿using BuildingBlocks.CleanArchitecture.Domain.Core;
 using BuildingBlocks.CleanArchitecture.Domain.Data;
 using Microsoft.EntityFrameworkCore;
 

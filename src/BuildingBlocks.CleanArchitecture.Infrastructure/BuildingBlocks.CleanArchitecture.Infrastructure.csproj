@@ -15,7 +15,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>BuildingBlocks.CleanArchitecture.Infrastructure</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.1.0</Version>
 		<Authors>Alexey Savchenko</Authors>
 		<Description>DDD Infrastructure Layer Entities</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -43,6 +43,10 @@
 		<PackageReference Include="Quartz" Version="3.15.0" />
 		<PackageReference Include="Quartz.Extensions.Hosting" Version="3.15.0" />
 		<PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Persistence\Database\Interceptors\" />
 	</ItemGroup>
 
 </Project>

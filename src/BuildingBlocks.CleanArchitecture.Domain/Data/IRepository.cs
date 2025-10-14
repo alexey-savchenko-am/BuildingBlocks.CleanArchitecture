@@ -1,4 +1,6 @@
-﻿namespace BuildingBlocks.CleanArchitecture.Domain.Data;
+﻿using BuildingBlocks.CleanArchitecture.Domain.Core;
+
+namespace BuildingBlocks.CleanArchitecture.Domain.Data;
 
 public interface IRepository<TAggregateRoot, TId>
     where TAggregateRoot : AggregateRoot<TId>
