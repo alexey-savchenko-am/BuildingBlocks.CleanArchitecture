@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.CleanArchitecture.Application.CQRS.Behaviors;
+﻿namespace BuildingBlocks.CleanArchitecture.Application;
 
 public class ValidationException : Exception
 {
