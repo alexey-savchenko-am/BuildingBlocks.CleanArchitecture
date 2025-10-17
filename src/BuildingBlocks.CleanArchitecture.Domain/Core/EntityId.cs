@@ -22,3 +22,9 @@ public abstract record EntityId<TSelf, TValue>
     public override int GetHashCode() =>
         EqualityComparer<TValue>.Default.GetHashCode(Value!);
 }
+
+public interface IEntityId<TSelf, TValue>
+    where TSelf : EntityId<TSelf, TValue>
+{
+    static abstract TSelf Create(TValue id);
+}
