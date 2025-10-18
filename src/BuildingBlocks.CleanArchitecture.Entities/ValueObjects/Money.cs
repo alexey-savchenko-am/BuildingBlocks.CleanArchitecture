@@ -1,5 +1,4 @@
 ﻿using BuildingBlocks.CleanArchitecture.Domain.Output;
-using BuildingBlocks.Domain.ValueObjects;
 
 namespace BuildingBlocks.CleanArchitecture.Entities.ValueObjects;
 

@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.CleanArchitecture.Domain.Output;
 
-namespace BuildingBlocks.Domain.ValueObjects;
+namespace BuildingBlocks.CleanArchitecture.Entities.ValueObjects;
 
 public sealed record Currency
 {
