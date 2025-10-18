@@ -4,6 +4,7 @@ namespace BuildingBlocks.CleanArchitecture.Domain.Data;
 
 public interface ISession
 {
-    IDbTransaction StartTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
-    Task StoreAsync(CancellationToken ct = default);
+    Task CommitAsync(CancellationToken ct = default);
+    Task RollbackAsync(CancellationToken ct = default);
+    Task StartAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, CancellationToken ct = default);
 }
