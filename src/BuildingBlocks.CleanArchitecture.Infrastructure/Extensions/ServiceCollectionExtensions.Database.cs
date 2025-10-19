@@ -1,18 +1,15 @@
 ﻿using BuildingBlocks.CleanArchitecture.Domain.Data;
-using BuildingBlocks.CleanArchitecture.Infrastructure.Events;
 using BuildingBlocks.CleanArchitecture.Infrastructure.Persistence;
 using BuildingBlocks.CleanArchitecture.Infrastructure.Persistence.Database;
 using BuildingBlocks.CleanArchitecture.Infrastructure.Persistence.Database.Connection;
 using BuildingBlocks.CleanArchitecture.Infrastructure.Persistence.Database.Interceptors;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Reflection;
 
 namespace BuildingBlocks.CleanArchitecture.Infrastructure.Extensions;
 
-public static class InfrastructureServiceCollectionExtensions
+public static partial class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPostgres<TDbContext, TDatabaseOptionsSetup>(
         this IServiceCollection services)
@@ -45,36 +42,4 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped<ISession, Session>();
         return services;
     }
-
-    public static IServiceCollection AddRabbitMq(
-           this IServiceCollection services,
-           Func<MessageBrokerSettings> settingsFactory,
-           params Assembly[] consumerAssemblies)
-    {
-        var settings = settingsFactory();
-
-        services.AddMassTransit(config =>
-        {
-            config.SetKebabCaseEndpointNameFormatter();
-
-            foreach(var assembly in consumerAssemblies)
-            {
-                config.AddConsumers(assembly);
-            }
-            
-            config.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host(settings.Host, "/", h =>
-                {
-                    h.Username(settings.Username);
-                    h.Password(settings.Password);
-                });
-
-                cfg.ConfigureEndpoints(context);
-            });
-        });
-
-        return services;
-    }
-
 }

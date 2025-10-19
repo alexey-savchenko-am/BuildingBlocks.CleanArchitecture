@@ -1,11 +1,12 @@
 ﻿using BuildingBlocks.CleanArchitecture.Application.Events;
 using BuildingBlocks.CleanArchitecture.Infrastructure.Persistence.Database.InboxOutbox;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace BuildingBlocks.CleanArchitecture.Infrastructure.Events;
+namespace BuildingBlocks.CleanArchitecture.Infrastructure.Events.InboxOutbox;
 
-public class PersistentEventBus(DbContext DbContext): IEventBus
+public class PersistentEventBus(DbContext DbContext, ILogger<PersistentEventBus> Logger) : IEventBus
 {
     JsonSerializerOptions _options = new()
     {
@@ -13,7 +14,7 @@ public class PersistentEventBus(DbContext DbContext): IEventBus
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
-    public async Task PublishAsync<T>(T message, CancellationToken cancellationToken = default) 
+    public async Task PublishAsync<T>(T message, CancellationToken cancellationToken = default)
         where T : IIntegrationEvent
     {
         if (DbContext is not MessagingDbContextBase messagingDbContext)
