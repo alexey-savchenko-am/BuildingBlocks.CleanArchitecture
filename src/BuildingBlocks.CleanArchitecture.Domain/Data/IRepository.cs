@@ -2,9 +2,9 @@
 
 namespace BuildingBlocks.CleanArchitecture.Domain.Data;
 
-public interface IRepository<TAggregateRoot, TId>
-    where TAggregateRoot : AggregateRoot<TId>
-    where TId : EntityId<TId, Guid>
+public interface IRepository<TAggregateRoot, TId, TKey>
+    where TAggregateRoot : AggregateRoot<TId, TKey>
+    where TId : EntityId<TId, TKey>
 {
     ValueTask<TAggregateRoot?> FindByIdAsync(TId id, CancellationToken cancellationToken = default);
     Task AddAsync(TAggregateRoot aggregate, CancellationToken cancellationToken = default);

@@ -34,12 +34,8 @@ public static partial class ServiceCollectionExtensions
             builder.EnableSensitiveDataLogging(options.EnableSensitiveDataLogging);
         });
 
-        return services;
-    }
-
-    public static IServiceCollection AddSession(this IServiceCollection services)
-    {
         services.AddScoped<ISession, Session>();
+
         return services;
     }
 }

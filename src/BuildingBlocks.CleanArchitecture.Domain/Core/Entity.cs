@@ -1,14 +1,14 @@
 ﻿namespace BuildingBlocks.CleanArchitecture.Domain.Core;
 
-public abstract class Entity<TId>
-    : IEquatable<Entity<TId>>
-    where TId : EntityId<TId, Guid>
+public abstract class Entity<TId, TKey>
+    : IEquatable<Entity<TId, TKey>>
+    where TId : EntityId<TId, TKey>
 {
     public TId Id { get; }
 
     protected Entity(TId id) => Id = id;
 
-    public bool Equals(Entity<TId>? other)
+    public bool Equals(Entity<TId, TKey>? other)
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
@@ -22,7 +22,7 @@ public abstract class Entity<TId>
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != GetType()) return false;
 
-        return Equals((Entity<TId>)obj);
+        return Equals((Entity<TId, TKey>)obj);
     }
 
     public override int GetHashCode()
@@ -30,9 +30,9 @@ public abstract class Entity<TId>
         return EqualityComparer<TId>.Default.GetHashCode();
     }
 
-    public static bool operator ==(Entity<TId>? left, Entity<TId>? right) =>
+    public static bool operator ==(Entity<TId, TKey>? left, Entity<TId, TKey>? right) =>
     Equals(left, right);
 
-    public static bool operator !=(Entity<TId>? left, Entity<TId>? right) =>
+    public static bool operator !=(Entity<TId, TKey>? left, Entity<TId, TKey>? right) =>
         !Equals(left, right);
 }

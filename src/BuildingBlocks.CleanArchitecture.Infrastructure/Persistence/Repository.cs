@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BuildingBlocks.CleanArchitecture.Infrastructure.Persistence;
 
-public abstract class Repository<TAggregateRoot, TId>
-    : IRepository<TAggregateRoot, TId>
-    where TAggregateRoot : AggregateRoot<TId>
-    where TId : EntityId<TId, Guid>
+public abstract class Repository<TAggregateRoot, TId, TKey>
+    : IRepository<TAggregateRoot, TId, TKey>
+    where TAggregateRoot : AggregateRoot<TId, TKey>
+    where TId : EntityId<TId, TKey>
 {
     protected DbContext DbContext { get; }
 

@@ -1,9 +1,9 @@
 ﻿namespace BuildingBlocks.CleanArchitecture.Domain.Core;
 
-public abstract class AggregateRoot<TId>(TId id)
-    : Entity<TId>(id)
+public abstract class AggregateRoot<TId, TKey>(TId id)
+    : Entity<TId, TKey>(id)
     , IAggregateRoot
-    where TId : EntityId<TId, Guid>
+    where TId : EntityId<TId, TKey>
 {
     private readonly List<IDomainEvent> _domainEvents = new();
 
