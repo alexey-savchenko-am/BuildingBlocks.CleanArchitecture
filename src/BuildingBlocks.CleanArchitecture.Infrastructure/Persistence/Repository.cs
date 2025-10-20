@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BuildingBlocks.CleanArchitecture.Infrastructure.Persistence;
 
-public abstract class Repository<TAggregateRoot, TId, TKey>
-    : IRepository<TAggregateRoot, TId, TKey>
-    where TAggregateRoot : AggregateRoot<TId, TKey>
-    where TId : EntityId<TId, TKey>
+public abstract class Repository<TAggregateRoot, TId>
+    : IRepository<TAggregateRoot, TId>
+    where TAggregateRoot : AggregateRoot<TId>
+    where TId : IEntityId
 {
     protected DbContext DbContext { get; }
 
@@ -37,7 +37,7 @@ public abstract class Repository<TAggregateRoot, TId, TKey>
     public async Task<int> RemoveAsync(TAggregateRoot aggregate, CancellationToken cancellationToken = default)
     {
         var removedRowCount = await DbContext.Set<TAggregateRoot>()
-            .Where(entity => entity.Id == aggregate.Id)
+            .Where(entity => entity.Id.Equals(aggregate.Id))
             .ExecuteDeleteAsync(cancellationToken);
 
         return removedRowCount;

@@ -1,28 +1,21 @@
 ﻿namespace BuildingBlocks.CleanArchitecture.Domain.Core;
 
 
-public abstract record GuidEntityId<TSelf>
-    : EntityId<TSelf, Guid>
+public abstract record GuidEntityId<TSelf>(Guid Value)
+    : EntityId<TSelf, Guid>(Value)
     where TSelf : EntityId<TSelf, Guid>
 {
-    protected GuidEntityId(Guid value) 
-        : base(value)
-    {
-    }
 }
 
-public abstract record StringEntityId<TSelf>
-    : EntityId<TSelf, string>
+public abstract record StringEntityId<TSelf>(string Value)
+    : EntityId<TSelf, string>(Value)
     where TSelf : EntityId<TSelf, string>
 {
-    protected StringEntityId(string value) 
-        : base(value)
-    {
-    }
 }
 
 public abstract record EntityId<TSelf, TValue>
     : IEquatable<EntityId<TSelf, TValue>>
+    , IEntityId<TValue>
     where TSelf : EntityId<TSelf, TValue>
 {
     public TValue Value { get; }
@@ -42,10 +35,4 @@ public abstract record EntityId<TSelf, TValue>
 
     public override int GetHashCode() =>
         EqualityComparer<TValue>.Default.GetHashCode(Value!);
-}
-
-public interface IEntityId<TSelf, TValue>
-    where TSelf : EntityId<TSelf, TValue>
-{
-    static abstract TSelf Create(TValue id);
 }
