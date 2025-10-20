@@ -1,5 +1,26 @@
 ﻿namespace BuildingBlocks.CleanArchitecture.Domain.Core;
 
+
+public abstract record GuidEntityId<TSelf>
+    : EntityId<TSelf, Guid>
+    where TSelf : EntityId<TSelf, Guid>
+{
+    protected GuidEntityId(Guid value) 
+        : base(value)
+    {
+    }
+}
+
+public abstract record StringEntityId<TSelf>
+    : EntityId<TSelf, string>
+    where TSelf : EntityId<TSelf, string>
+{
+    protected StringEntityId(string value) 
+        : base(value)
+    {
+    }
+}
+
 public abstract record EntityId<TSelf, TValue>
     : IEquatable<EntityId<TSelf, TValue>>
     where TSelf : EntityId<TSelf, TValue>

@@ -3,7 +3,7 @@
 
 public abstract class GuidKeyEntity<TId>
     : Entity<TId, Guid>
-    where TId : EntityId<TId, Guid>
+    where TId : GuidEntityId<TId>
 {
     protected GuidKeyEntity(TId id) 
         : base(id)
@@ -13,7 +13,7 @@ public abstract class GuidKeyEntity<TId>
 
 public abstract class StringKeyEntity<TId>
     : Entity<TId, string>
-    where TId : EntityId<TId, string>
+    where TId : StringEntityId<TId>
 {
     protected StringKeyEntity(TId id)
         : base(id)

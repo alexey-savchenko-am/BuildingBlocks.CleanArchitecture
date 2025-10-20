@@ -3,7 +3,7 @@
 
 public abstract class GuidKeyAggregateRoot<TId>
     : AggregateRoot<TId, Guid>
-    where TId : EntityId<TId, Guid>
+    where TId : GuidEntityId<TId>
 {
     protected GuidKeyAggregateRoot(TId id) 
         : base(id)
@@ -13,7 +13,7 @@ public abstract class GuidKeyAggregateRoot<TId>
 
 public abstract class StringKeyAggregateRoot<TId>
     : AggregateRoot<TId, string>
-    where TId : EntityId<TId, string>
+    where TId : StringEntityId<TId>
 {
     protected StringKeyAggregateRoot(TId id)
         : base(id)
