@@ -1,5 +1,26 @@
 ﻿namespace BuildingBlocks.CleanArchitecture.Domain.Core;
 
+
+public abstract class GuidKeyEntity<TId>
+    : Entity<TId, Guid>
+    where TId : EntityId<TId, Guid>
+{
+    protected GuidKeyEntity(TId id) 
+        : base(id)
+    {
+    }
+}
+
+public abstract class StringKeyEntity<TId>
+    : Entity<TId, string>
+    where TId : EntityId<TId, string>
+{
+    protected StringKeyEntity(TId id)
+        : base(id)
+    {
+    }
+}
+
 public abstract class Entity<TId, TKey>
     : IEquatable<Entity<TId, TKey>>
     where TId : EntityId<TId, TKey>
