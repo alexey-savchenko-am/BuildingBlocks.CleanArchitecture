@@ -9,7 +9,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>BuildingBlocks.CleanArchitecture.Domain</PackageId>
-		<Version>1.3.0</Version>
+		<Version>1.3.1</Version>
 		<Authors>Alexey Savchenko</Authors>
 		<Description>DDD Domain Layer Entities</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>

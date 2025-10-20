@@ -10,7 +10,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>BuildingBlocks.CleanArchitecture.Application</PackageId>
-		<Version>1.2.2</Version>
+		<Version>1.2.3</Version>
 		<Authors>Alexey Savchenko</Authors>
 		<Description>DDD Application Layer Entities</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
