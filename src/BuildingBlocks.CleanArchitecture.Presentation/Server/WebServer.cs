@@ -4,6 +4,7 @@ using BuildingBlocks.CleanArchitecture.Presentation.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -44,7 +45,7 @@ public class WebServer
     public static WebServer Create(string[] args) 
         => new(args);
     
-    public WebServer ConfigureLogging(Action<HostBuilderContext, LoggerConfiguration>? configure = null)
+    public WebServer ConfigureLogging(Action<HostBuilderContext, LoggerConfiguration, IConfiguration>? configure = null)
     {
         _builder.Host.UseSerilog((context, config) =>
         {
@@ -54,7 +55,7 @@ public class WebServer
                 .Enrich.WithProperty("Application", _builder.Environment.ApplicationName);
 
             // apply additional configuration if it was provided
-            configure?.Invoke(context, config);
+            configure?.Invoke(context, config, _builder.Configuration);
         });
 
         Log.Information("Full serilog configuration applied");
@@ -90,11 +91,9 @@ public class WebServer
         return this;
     }
 
-    public WebServer ConfigureJwtAuthentication(
-        string key, 
-        string issuer,
-        bool requireHttpsMetadata)
+    public WebServer ConfigureJwtAuthentication(Func<IConfiguration, JwtTokenSettings> settingsFactory)
     {
+        var settings = settingsFactory.Invoke(_builder.Configuration);
         _builder.Services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -102,8 +101,8 @@ public class WebServer
         })
         .AddJwtBearer(options =>
         {
-            var keyBytes = Encoding.ASCII.GetBytes(key);
-            options.RequireHttpsMetadata = requireHttpsMetadata;
+            var keyBytes = Encoding.ASCII.GetBytes(settings.Token);
+            options.RequireHttpsMetadata = settings.RequireHttpsMetadata;
             options.SaveToken = true;
             options.TokenValidationParameters = 
                 new TokenValidationParameters
@@ -111,8 +110,8 @@ public class WebServer
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = issuer,
-                    ValidAudience = issuer,
+                    ValidIssuer = settings.Issuer,
+                    ValidAudience = settings.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
                 };
         });
@@ -206,9 +205,9 @@ public class WebServer
         return this;
     }
 
-    public WebServer ConfigureServices(Action<IServiceCollection> serviceBuilder)
+    public WebServer ConfigureServices(Action<IServiceCollection, IConfiguration> serviceBuilder)
     {
-        serviceBuilder.Invoke(_builder.Services);
+        serviceBuilder.Invoke(_builder.Services, _builder.Configuration);
         return this;
     }
 
