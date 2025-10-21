@@ -29,9 +29,9 @@ public class WebServer
 
     private ApiVersion[]? _preconfiguredVersions;
 
-    private WebServer(WebApplicationBuilder builder)
+    private WebServer(string[] args)
     {
-        _builder = builder;
+        _builder = WebApplication.CreateBuilder(args);
 
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
@@ -41,8 +41,8 @@ public class WebServer
         Log.Information("Bootstrap logger initialized");
     }
 
-    public static WebServer Create(WebApplicationBuilder builder)
-        => new (builder);
+    public static WebServer Create(string[] args) 
+        => new(args);
     
     public WebServer ConfigureLogging(Action<HostBuilderContext, LoggerConfiguration>? configure = null)
     {
@@ -93,8 +93,7 @@ public class WebServer
     public WebServer ConfigureJwtAuthentication(
         string key, 
         string issuer,
-        bool requireHttpsMetadata,
-        Func<TokenValidationParameters>? configureParams)
+        bool requireHttpsMetadata)
     {
         _builder.Services.AddAuthentication(options =>
         {
@@ -107,7 +106,7 @@ public class WebServer
             options.RequireHttpsMetadata = requireHttpsMetadata;
             options.SaveToken = true;
             options.TokenValidationParameters = 
-                configureParams?.Invoke() ?? new TokenValidationParameters
+                new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -124,14 +123,14 @@ public class WebServer
         return this;
     }
 
-    public WebServer ConfigureSwagger<TSwaggerGenOptions>(bool useJwtBearer = true)
+    public WebServer ConfigureSwagger<TSwaggerGenOptions>(bool configureBearerTokenSecurity = true)
         where TSwaggerGenOptions : class, IConfigureOptions<SwaggerGenOptions>
     {
         _builder.Services.AddEndpointsApiExplorer();
         _builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, TSwaggerGenOptions>();
         _builder.Services.AddSwaggerGen(options =>
         {
-            if (useJwtBearer)
+            if (configureBearerTokenSecurity)
             {
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -207,7 +206,7 @@ public class WebServer
         return this;
     }
 
-    public WebServer AddServices(Action<IServiceCollection> serviceBuilder)
+    public WebServer ConfigureServices(Action<IServiceCollection> serviceBuilder)
     {
         serviceBuilder.Invoke(_builder.Services);
         return this;
