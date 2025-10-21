@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace BuildingBlocks.CleanArchitecture.Application.CQRS;
+namespace BuildingBlocks.CleanArchitecture.Application.Extensions;
 
-public static class MediatrExtensions
+public static class ServiceCollectionExtensions
 {
     public static void AddMeiatrWithBehaviors(
         this IServiceCollection services,

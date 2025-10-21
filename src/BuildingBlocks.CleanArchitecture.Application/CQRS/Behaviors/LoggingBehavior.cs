@@ -27,20 +27,33 @@ public class LoggingBehavior<TRequest, TResponse>
 
         _logger.LogInformation("Processing request {RequestName}", requestName);
 
-        TResponse result = await next();
+        try
+        {
+            TResponse result = await next();
 
-        if (result.IsSuccess)
-        {
-            _logger.LogInformation("Request {RequestName} successfully completed", requestName);
-        }
-        else
-        {
-            using (LogContext.PushProperty("Error", result.Error, destructureObjects: true))
+            if (result.IsSuccess)
             {
-                _logger.LogError("Request {RequestName} failed with error", requestName);
+                _logger.LogInformation("Request {RequestName} successfully completed", requestName);
             }
-        }
+            else
+            {
+                using (LogContext.PushProperty("Error", result.Error, destructureObjects: true))
+                {
+                    _logger.LogError("Request {RequestName} failed with domain error", requestName);
+                }
+            }
 
-        return result;
+            return result;
+        }
+        catch (Exception ex)
+        {
+            using (LogContext.PushProperty("Exception", ex, destructureObjects: true))
+            {
+                _logger.LogError(ex, "Request {RequestName} failed with unhandled exception", requestName);
+            }
+
+            throw;
+        }
     }
+
 }
