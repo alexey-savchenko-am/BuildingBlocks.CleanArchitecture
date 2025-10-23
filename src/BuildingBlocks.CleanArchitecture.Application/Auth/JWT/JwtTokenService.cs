@@ -9,50 +9,38 @@ internal sealed class JwtTokenService
     : IJwtTokenGenerator
     , IJwtTokenValidator
 {
-    public JwtTokens GenerateTokens(string accessKey, string refreshKey, TokenPayload payload)
-    {
-        var accessToken = GenerateAccessToken(accessKey, payload);
-        var refreshToken = GenerateRefreshToken(refreshKey, payload);
-
-        return new JwtTokens(
-            accessToken.token,
-            refreshToken.token,
-            accessToken.expiresAt,
-            refreshToken.expiresAt);
-    }
-
-    public (string token, DateTime expiresAt) GenerateAccessToken(string accessKey, TokenPayload payload)
+    public AccessToken GenerateAccessToken(string accessKey, TokenPayload payload, TimeSpan? expiresAt)
     {
         var claims = BuildClaims(payload, includeRoles: true);
 
         // NOTE: access token lives 15 min by default
-        var expiresAt = DateTime.UtcNow.Add(payload.ExpiresAt ?? TimeSpan.FromMinutes(15));
+        var expDate = DateTime.UtcNow.Add(expiresAt ?? TimeSpan.FromMinutes(15));
 
         var token = new JwtSecurityToken(
             issuer: payload.Issuer,
             audience: payload.Audience,
             claims: claims,
-            expires: expiresAt,
+            expires: expDate,
             signingCredentials: GenerateCredentials(accessKey));
 
-        return (token: new JwtSecurityTokenHandler().WriteToken(token), expiresAt);
+        return new (Value: new JwtSecurityTokenHandler().WriteToken(token), ExpirationDate: expDate);
     }
 
-    public (string token, DateTime expiresAt) GenerateRefreshToken(string refreshKey, TokenPayload payload)
+    public RefreshToken GenerateRefreshToken(string refreshKey, TokenPayload payload, TimeSpan? expiresAt)
     {
         var claims = BuildClaims(payload, includeRoles: false);
 
         // NOTE: refresh token lives 30 days by default
-        var expiresAt = DateTime.UtcNow.Add(payload.ExpiresAt ?? TimeSpan.FromDays(30));
+        var expDate = DateTime.UtcNow.Add(expiresAt ?? TimeSpan.FromDays(30));
 
         var token = new JwtSecurityToken(
             issuer: payload.Issuer,
             audience: payload.Audience,
             claims: claims,
-            expires: expiresAt,
+            expires: expDate,
             signingCredentials: GenerateCredentials(refreshKey));
 
-        return (token: new JwtSecurityTokenHandler().WriteToken(token), expiresAt);
+        return new(Value: new JwtSecurityTokenHandler().WriteToken(token), ExpirationDate: expDate);
     }
 
     public bool TryValidate(TokenValidationPayload validationPayload, out ClaimsPrincipal? principal)

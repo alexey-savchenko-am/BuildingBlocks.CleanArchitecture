@@ -2,7 +2,6 @@
 
 public interface IJwtTokenGenerator
 {
-    JwtTokens GenerateTokens(string accessKey, string refreshKey, TokenPayload payload);
-    (string token, DateTime expiresAt) GenerateAccessToken(string accessKey, TokenPayload payload);
-    (string token, DateTime expiresAt) GenerateRefreshToken(string refreshKey, TokenPayload payload);
+    AccessToken GenerateAccessToken(string accessKey, TokenPayload payload, TimeSpan? expiresAt);
+    RefreshToken GenerateRefreshToken(string refreshKey, TokenPayload payload, TimeSpan? expiresAt);
 }
