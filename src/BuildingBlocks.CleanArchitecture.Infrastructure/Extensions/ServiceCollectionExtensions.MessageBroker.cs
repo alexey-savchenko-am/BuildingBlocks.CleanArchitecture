@@ -39,11 +39,11 @@ public static partial class ServiceCollectionExtensions
 
         if (settings.PersistEventsInDb)
         {
-            services.AddSingleton<IEventBus, PersistentEventBus>();
+            services.AddScoped<IEventBus, PersistentEventBus>();
         }
         else
         {
-            services.AddSingleton<IEventBus, DefaultEventBus>();
+            services.AddScoped<IEventBus, DefaultEventBus>();
         }
 
         return services;
