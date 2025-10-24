@@ -35,6 +35,7 @@ public static partial class ServiceCollectionExtensions
         });
 
         services.AddScoped<ISession, Session>();
+        services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
 
         return services;
     }

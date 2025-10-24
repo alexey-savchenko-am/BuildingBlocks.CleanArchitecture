@@ -15,7 +15,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>BuildingBlocks.CleanArchitecture.Infrastructure</PackageId>
-		<Version>1.3.5</Version>
+		<Version>1.3.6</Version>
 		<Authors>Alexey Savchenko</Authors>
 		<Description>DDD Infrastructure Layer Entities</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
