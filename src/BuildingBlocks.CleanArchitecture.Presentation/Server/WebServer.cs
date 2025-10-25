@@ -118,6 +118,8 @@ public class WebServer
                 };
         });
 
+        _builder.Services.AddAuthorization();
+
         _jwtAuthConfigured = true;
         Log.Information("JWT authentication applied");
 
@@ -201,7 +203,7 @@ public class WebServer
 
     public WebServer ConfigureControllers()
     {
-        _builder.Services.AddVersionedEndpoints();
+        _builder.Services.AddControllers();
         _controllersConfigured = true;
         Log.Information("Controllers configured");
         return this;
