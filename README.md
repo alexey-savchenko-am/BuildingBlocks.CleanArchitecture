@@ -17,6 +17,7 @@ https://www.nuget.org/packages/BuildingBlocks.CleanArchitecture.Entities
 - **Domain** — entities, aggregates, value objects, domain events.
 - **Application** — commands, queries, handlers, and specifications.
 - **Infrastructure** — repository implementations, integrations with external services.
+- **Presentation** — API and web server tools
 
 These libraries are designed for **reusability** and can be distributed as NuGet packages.
 
@@ -29,6 +30,7 @@ The solution contains four main projects:
 - `BuildingBlocks.CleanArchitecture.Domain` — domain entities and business logic.
 - `BuildingBlocks.CleanArchitecture.Application` — command and query handlers.
 - `BuildingBlocks.CleanArchitecture.Infrastructure` — repository and integration implementations.
+- `BuildingBlocks.CleanArchitecture.Presentation` — API and web server tools.
 
 ---
 
