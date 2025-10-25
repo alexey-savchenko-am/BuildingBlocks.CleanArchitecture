@@ -3,18 +3,20 @@ using BuildingBlocks.CleanArchitecture.Infrastructure.Events;
 using BuildingBlocks.CleanArchitecture.Infrastructure.Events.InboxOutbox;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace BuildingBlocks.CleanArchitecture.Infrastructure.Extensions;
 
 public static partial class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddRabbitMq(
-       this IServiceCollection services,
-       Func<MessageBrokerSettings> settingsFactory,
-       params Assembly[] consumerAssemblies)
+    public static IServiceCollection AddRabbitMq<TMessageBrokerOptionsSetup>(
+        this IServiceCollection services,
+        bool persistEventsInDb,
+        params Assembly[] consumerAssemblies)
+        where TMessageBrokerOptionsSetup: class, IConfigureOptions<MessageBrokerSettings>
     {
-        var settings = settingsFactory();
+        services.ConfigureOptions<TMessageBrokerOptionsSetup>();
 
         services.AddMassTransit(config =>
         {
@@ -27,17 +29,19 @@ public static partial class ServiceCollectionExtensions
 
             config.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host(settings.Host, "/", h =>
+                var options = context.GetRequiredService<IOptions<MessageBrokerSettings>>().Value;
+
+                cfg.Host(options.Host, "/", h =>
                 {
-                    h.Username(settings.Username);
-                    h.Password(settings.Password);
+                    h.Username(options.Username);
+                    h.Password(options.Password);
                 });
 
                 cfg.ConfigureEndpoints(context);
             });
         });
 
-        if (settings.PersistEventsInDb)
+        if (persistEventsInDb)
         {
             services.AddScoped<IEventBus, PersistentEventBus>();
         }
