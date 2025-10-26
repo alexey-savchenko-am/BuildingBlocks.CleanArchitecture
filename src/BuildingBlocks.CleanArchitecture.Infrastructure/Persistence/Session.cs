@@ -27,13 +27,18 @@ public sealed class Session
 
     public async Task CommitAsync(CancellationToken ct = default)
     {
-        if (_transaction is null)
-            throw new InvalidOperationException("Transaction not started.");
+        var strategy = _dbContext.Database.CreateExecutionStrategy();
 
-        await _dbContext.SaveChangesAsync(ct);
-        await _transaction.CommitAsync(ct);
-        await _transaction.DisposeAsync();
-        _transaction = null;
+        await strategy.ExecuteAsync(async () =>
+        {
+            if (_transaction is null)
+                throw new InvalidOperationException("Transaction not started.");
+
+            await _dbContext.SaveChangesAsync(ct);
+            await _transaction!.CommitAsync(ct);
+            await _transaction.DisposeAsync();
+            _transaction = null;
+        });
     }
 
     public async Task RollbackAsync(CancellationToken ct = default)

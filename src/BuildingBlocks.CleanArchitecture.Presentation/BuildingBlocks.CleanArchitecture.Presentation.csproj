@@ -9,7 +9,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>BuildingBlocks.CleanArchitecture.Presentation</PackageId>
-		<Version>1.2.6</Version>
+		<Version>1.2.7</Version>
 		<Authors>Alexey Savchenko</Authors>
 		<Description>DDD Presentation Layer Entities</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
