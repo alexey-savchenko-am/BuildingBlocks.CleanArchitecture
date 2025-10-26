@@ -41,6 +41,12 @@ public class WebServer
             .Enrich.WithProperty("Phase", "Bootstrap")
             .CreateBootstrapLogger();
 
+        _builder.Services.AddAntiforgery(options =>
+        {
+            options.Cookie.Name = "X-CSRF-TOKEN";
+            options.HeaderName = "X-CSRF-TOKEN";
+        });
+
         Log.Information("Bootstrap logger initialized");
     }
 
@@ -280,7 +286,6 @@ public class WebServer
         
         return this;
     }
-
 
     public async Task RunAsync()
     {
