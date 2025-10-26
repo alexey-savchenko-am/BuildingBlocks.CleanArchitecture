@@ -42,3 +42,4 @@ To use the libraries in your project, add the corresponding NuGet packages:
 dotnet add package BuildingBlocks.CleanArchitecture.Domain
 dotnet add package BuildingBlocks.CleanArchitecture.Application
 dotnet add package BuildingBlocks.CleanArchitecture.Infrastructure
+dotnet add package BuildingBlocks.CleanArchitecture.Presentation
