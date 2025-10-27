@@ -26,7 +26,10 @@ public static partial class ServiceCollectionExtensions
             var outboxMessagesInterceptor = provider.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>();
             builder.UseNpgsql(options.ConnectionString, actions =>
             {
-                actions.EnableRetryOnFailure(options.MaxRetryCount);
+                if(options.MaxRetryCount is not null && options.MaxRetryCount > 0)
+                {
+                    actions.EnableRetryOnFailure();
+                }
                 actions.CommandTimeout(options.CommandTimeout);
             });
             builder.AddInterceptors(outboxMessagesInterceptor);
