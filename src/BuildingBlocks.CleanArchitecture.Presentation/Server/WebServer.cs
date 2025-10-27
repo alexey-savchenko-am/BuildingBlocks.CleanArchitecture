@@ -2,7 +2,6 @@
 using BuildingBlocks.CleanArchitecture.Infrastructure.Persistence.Database;
 using BuildingBlocks.CleanArchitecture.Presentation.Endpoints;
 using BuildingBlocks.CleanArchitecture.Presentation.Middlewares;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -221,7 +220,7 @@ public class WebServer
         return this;
     }
 
-    public WebServer Build(bool applyMigrations = false)
+    public WebServer Build(bool applyMigrations = false, bool recreateDatabase = false)
     {
         _app = _builder.Build();
 
@@ -229,7 +228,7 @@ public class WebServer
         {
             using var scope = _app.Services.CreateScope();
             var databaseInitializer = scope.ServiceProvider.GetService<IDatabaseInitializer>();
-            databaseInitializer?.InitializeAsync().Wait();
+            databaseInitializer?.InitializeAsync(recreateDatabase).Wait();
         }
 
         if (_preconfiguredVersions is not null)

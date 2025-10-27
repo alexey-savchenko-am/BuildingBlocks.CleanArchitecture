@@ -1,9 +1,5 @@
-﻿
-using MassTransit;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Polly;
-using System.Threading;
 
 namespace BuildingBlocks.CleanArchitecture.Infrastructure.Persistence.Database;
 
@@ -18,13 +14,18 @@ internal sealed class DatabaseInitializer
         _dbContext = dbContext;
         _logger = logger;
     }
-    public async Task InitializeAsync(CancellationToken ct = default)
+    public async Task InitializeAsync(bool recreateDatabase = false, CancellationToken ct = default)
     {
         _logger.LogInformation("Applying migrations for {DbContext}...", typeof(DbContext).Name);
 
         try
         {
-            await _dbContext.Database.MigrateAsync(ct);
+            if (recreateDatabase)
+            {
+                await _dbContext.Database.EnsureDeletedAsync().ConfigureAwait(false);
+            }
+            await _dbContext.Database.MigrateAsync(ct).ConfigureAwait(false);
+
             _logger.LogInformation("✅ Migrations applied successfully for {DbContext}.", typeof(DbContext).Name);
         }
         catch (Exception ex)

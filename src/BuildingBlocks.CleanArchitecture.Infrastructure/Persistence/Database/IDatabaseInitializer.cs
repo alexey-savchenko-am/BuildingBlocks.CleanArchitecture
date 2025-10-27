@@ -2,5 +2,5 @@
 
 public interface IDatabaseInitializer
 {
-    Task InitializeAsync(CancellationToken ct = default);
+    Task InitializeAsync(bool recreateDatabase = false, CancellationToken ct = default);
 }
