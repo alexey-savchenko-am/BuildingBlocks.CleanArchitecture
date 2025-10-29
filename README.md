@@ -6,7 +6,7 @@ https://www.nuget.org/packages/BuildingBlocks.CleanArchitecture.Infrastructure
 https://www.nuget.org/packages/BuildingBlocks.CleanArchitecture.Presentation
 https://www.nuget.org/packages/BuildingBlocks.CleanArchitecture.Entities
 
-**Reusable building blocks for .NET applications following Clean Architecture and Domain-Driven Design (DDD) principles.**
+**Reusable building blocks for .NET applications following Clean Architecture and Domain-Driven Design (DDD) principles**
 
 ---
 
