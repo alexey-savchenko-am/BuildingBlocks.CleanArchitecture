@@ -29,16 +29,13 @@ public sealed class Session
     {
         var strategy = _dbContext.Database.CreateExecutionStrategy();
 
-        await strategy.ExecuteAsync(async () =>
-        {
-            if (_transaction is null)
-                throw new InvalidOperationException("Transaction not started.");
+        if (_transaction is null)
+            throw new InvalidOperationException("Transaction not started.");
 
-            await _dbContext.SaveChangesAsync(ct);
-            await _transaction!.CommitAsync(ct);
-            await _transaction.DisposeAsync();
-            _transaction = null;
-        });
+        await _dbContext.SaveChangesAsync(ct);
+        await _transaction!.CommitAsync(ct);
+        await _transaction.DisposeAsync();
+        _transaction = null;
     }
 
     public async Task RollbackAsync(CancellationToken ct = default)
