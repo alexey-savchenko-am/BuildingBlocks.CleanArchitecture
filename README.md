@@ -9,7 +9,6 @@ https://www.nuget.org/packages/BuildingBlocks.CleanArchitecture.Entities
 **Reusable building blocks for .NET applications following Clean Architecture and Domain-Driven Design (DDD) principles.**
 
 ---
-
 ## 📦 Overview
 
 **BuildingBlocks.CleanArchitecture** is a set of libraries that implement core concepts of **Clean Architecture** and **DDD** for .NET applications. It provides abstractions and implementations for different layers:
